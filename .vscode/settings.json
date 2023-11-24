@@ -56,5 +56,6 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "CrashCourse.sln"
+    "dotnet.defaultSolution": "CrashCourse.sln",
+    "prettier.requireConfig": false
 }
