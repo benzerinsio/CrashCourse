@@ -6,10 +6,11 @@ public class Player : MonoBehaviour
 {
     private Rigidbody2D rb;
     private Animator anim;
+
     [SerializeField] private float moveSpeed;
     [SerializeField] private float jumpForce;
+    [SerializeField] bool isMoving;
     private float xInput;
-    private bool isMoving;
 
     // Start is called before the first frame update
     void Start()
@@ -30,8 +31,8 @@ public class Player : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
 
-        isMoving = true;
+        isMoving = rb.velocity.x != 0;
 
-        //anim.SetBool();
+        anim.SetBool("isMoving",isMoving);
     }
 }
