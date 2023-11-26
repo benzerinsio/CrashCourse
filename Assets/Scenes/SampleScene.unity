@@ -527,6 +527,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 10
   jumpForce: 15
+  groundCheckDistance: 0.4
 --- !u!70 &1323036367
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

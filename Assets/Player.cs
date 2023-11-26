@@ -13,6 +13,10 @@ public class Player : MonoBehaviour
     private int facingDirection = 1;
     private bool facingRight = true;
 
+    private bool isGrounded;
+    [SerializeField] private float groundCheckDistance;
+    [SerializeField] private LayerMask whatIsGround;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -60,5 +64,9 @@ public class Player : MonoBehaviour
             Flip();
         else if(rb.velocity.x < 0 && facingRight)
             Flip();
+    }
+
+    private void OnDrawGizmos(){
+        Gizmos.DrawLine(transform.position, new Vector3(transform.position.x, transform.position.y - groundCheckDistance));
     }
 }
