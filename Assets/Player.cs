@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed;
-    [SerializeField] private float jumpForce;
+    [SerializeField]
+    private float moveSpeed;
+
+    [SerializeField]
+    private float jumpForce;
     private Rigidbody2D rb;
     private Animator anim;
     private float xInput;
@@ -13,8 +16,11 @@ public class Player : MonoBehaviour
     private bool facingRight = true;
 
     [Header("Collision Info")] //doesn't work if private value is right after the header
-    [SerializeField] private float groundCheckDistance;
-    [SerializeField] private LayerMask whatIsGround;
+    [SerializeField]
+    private float groundCheckDistance;
+
+    [SerializeField]
+    private LayerMask whatIsGround;
     private bool isGrounded;
 
     // Start is called before the first frame update
@@ -41,7 +47,7 @@ public class Player : MonoBehaviour
 
     private void Jump()
     {
-        if(isGrounded)
+        if (isGrounded)
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
     }
 
@@ -57,6 +63,8 @@ public class Player : MonoBehaviour
         bool isMoving = rb.velocity.x != 0;
 
         anim.SetBool("isMoving", isMoving);
+        anim.SetBool("isGrounded", isGrounded);
+        anim.SetFloat("yVelocity", rb.velocity.y);
     }
 
     private void Flip()
@@ -84,6 +92,11 @@ public class Player : MonoBehaviour
 
     private void CollisionChecks()
     {
-        isGrounded = Physics2D.Raycast(transform.position, Vector2.down, groundCheckDistance, whatIsGround);
+        isGrounded = Physics2D.Raycast(
+            transform.position,
+            Vector2.down,
+            groundCheckDistance,
+            whatIsGround
+        );
     }
 }
