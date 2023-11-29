@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 455871679}
   - component: {fileID: 455871678}
   - component: {fileID: 455871677}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -527,7 +527,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 10
   jumpForce: 15
-  groundCheckDistance: 0.4
+  groundCheckDistance: 1.3
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!70 &1323036367
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
