@@ -1,10 +1,8 @@
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : Entity
 {
-    private Rigidbody2D rb;
-    private Animator anim;
-
+    [Header("Move Info")]
     [SerializeField] private float moveSpeed;
     [SerializeField] private float jumpForce;
 
@@ -21,26 +19,18 @@ public class Player : MonoBehaviour
     private bool isAttacking;
     private int comboCounter;
     private float comboTimeWindow;
-    
 
     private float xInput;
 
-    private int facingDirection = 1;
-    private bool facingRight = true;
-
-    [Header("Collision Info")] //doesn't work if private value is right after the header
-    [SerializeField] private float groundCheckDistance;
-    [SerializeField] private LayerMask whatIsGround;
-    private bool isGrounded;
-
-    void Start()
+    protected override void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-        anim = GetComponentInChildren<Animator>();
+        base.Start();
     }
 
-    void Update()
+    protected override void Update()
     {
+        base.Update();
+
         Movement();
         CheckInput();
         CollisionChecks();
@@ -67,7 +57,8 @@ public class Player : MonoBehaviour
         if (isAttacking)
         {
             rb.velocity = new Vector2(0, 0);
-        }else if (dashTime > 0)
+        }
+        else if (dashTime > 0)
         {
             rb.velocity = new Vector2(facingDirection * dashSpeed, 0);
         }
@@ -120,13 +111,6 @@ public class Player : MonoBehaviour
         anim.SetInteger("comboCounter", comboCounter);
     }
 
-    private void Flip()
-    {
-        facingDirection = facingDirection * -1;
-        facingRight = !facingRight;
-        transform.Rotate(0, 180, 0);
-    }
-
     private void FlipController()
     {
         if (rb.velocity.x > 0 && !facingRight)
@@ -135,28 +119,10 @@ public class Player : MonoBehaviour
             Flip();
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawLine(
-            transform.position,
-            new Vector3(transform.position.x, transform.position.y - groundCheckDistance)
-        );
-    }
-
-    private void CollisionChecks()
-    {
-        isGrounded = Physics2D.Raycast(
-            transform.position,
-            Vector2.down,
-            groundCheckDistance,
-            whatIsGround
-        );
-    }
-
     private void startAttackEvent()
     {
-        if(!isGrounded)
-        { 
+        if (!isGrounded)
+        {
             return;
         }
         if (comboTimeWindow < 0)
