@@ -17,8 +17,11 @@ public class Player : MonoBehaviour
     private float dashCooldownTimer;
 
     [Header("Attack Info")]
+    [SerializeField] private float comboTime = 1f;
     private bool isAttacking;
     private int comboCounter;
+    private float comboTimeWindow;
+    
 
     private float xInput;
 
@@ -44,6 +47,7 @@ public class Player : MonoBehaviour
 
         dashTime -= Time.deltaTime;
         dashCooldownTimer -= Time.deltaTime;
+        comboTimeWindow -= Time.deltaTime;
 
         FlipController();
         AnimatorController();
@@ -52,12 +56,20 @@ public class Player : MonoBehaviour
     public void AttackOver()
     {
         isAttacking = false;
+        comboCounter++;
+        if (comboCounter > 2)
+        {
+            comboCounter = 0;
+        }
     }
     private void Movement()
     {
-        if (dashTime > 0)
+        if (isAttacking)
         {
-            rb.velocity = new Vector2(xInput * dashSpeed, 0);
+            rb.velocity = new Vector2(0, 0);
+        }else if (dashTime > 0)
+        {
+            rb.velocity = new Vector2(facingDirection * dashSpeed, 0);
         }
         else
         {
@@ -84,13 +96,13 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            isAttacking = true;
+            startAttackEvent();
         }
     }
 
     private void dashAbility()
     {
-        if (dashCooldownTimer < 0)//the second part of input check (the first part is only input as mentioned) 
+        if (dashCooldownTimer < 0 && !isAttacking)//the second part of input check (the first part is only input as mentioned) 
         {
             dashCooldownTimer = dashCooldown;
             dashTime = dashDuration;
@@ -139,5 +151,19 @@ public class Player : MonoBehaviour
             groundCheckDistance,
             whatIsGround
         );
+    }
+
+    private void startAttackEvent()
+    {
+        if(!isGrounded)
+        { 
+            return;
+        }
+        if (comboTimeWindow < 0)
+        {
+            comboCounter = 0;
+        }
+        isAttacking = true;
+        comboTimeWindow = comboTime;
     }
 }
